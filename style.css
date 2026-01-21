@@ -1,0 +1,41 @@
+.body {
+  color: red;
+  background-color: aquamarine;
+  background: rebeccapurple;
+}
+
+.delete {
+  color: blue;
+  font-weight: 900;
+  font-size: 100px;
+  font-family: Arial, Helvetica, sans-serif;
+  border-radius: 0cap;
+  border-color: black;
+  cursor: crosshair;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  background: blanchedalmond;
+}
+
+.goback {
+  width: 25em;
+  display: block;
+  margin-top: auto;
+}
+
+.deletecontainer {
+  display: flex;
+  justify-content: center;
+}
+
+.goback {
+  display: flex;
+  justify-content: center;
+}
+
+.p {
+  font-size: 50px;
+  font-style: italic;
+  color: darkturquoise;
+}
