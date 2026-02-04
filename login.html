@@ -3,12 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>log in</title>
+    <title>Log In - Git Gud IT Services</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <header class="header">
+      <a href="index.html" class="back-home">Back to Home</a>
+    </header>
     <div class="login-signup-container">
-      <form class="login-signup-form" action="#" method="post">
+      <form class="login-signup-form" action="profile.html" method="get">
+        <!-- Updated action and method -->
         <h1>Log In</h1>
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required />
@@ -16,7 +20,12 @@
         <input type="password" id="password" name="password" required />
         <button type="submit">Log In</button>
         <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+        <p><a href="#">Forgot Password?</a></p>
+        <!-- Placeholder link -->
       </form>
     </div>
+    <footer class="footer">
+      <p>&copy; Git Gud IT Services | Created by John Niño Alcala</p>
+    </footer>
   </body>
 </html>

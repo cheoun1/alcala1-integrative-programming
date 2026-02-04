@@ -354,3 +354,281 @@ body {
       0 0 60px #00d4ff;
   }
 }
+
+/* Dashboard / Profile / Settings styles */
+.dashboard-header {
+  background: rgba(0, 0, 0, 0.6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(6px);
+}
+
+.nav {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+}
+
+.nav-brand {
+  color: #00d4ff;
+  font-weight: 700;
+  font-size: 1.4rem;
+  text-decoration: none;
+}
+
+.nav-links a {
+  color: #e0e0e0;
+  margin-left: 18px;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.nav-links a:hover {
+  background: rgba(0, 212, 255, 0.06);
+}
+
+.dashboard {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 30px;
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.sidebar {
+  position: relative;
+}
+
+.sidebar-card {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 24px;
+  border-radius: 12px;
+  text-align: center;
+  border: 1px solid rgba(0, 212, 255, 0.06);
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: block;
+  margin: 0 auto 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+.name {
+  color: #00d4ff;
+  margin-bottom: 6px;
+}
+
+.email,
+.address {
+  font-size: 0.95rem;
+  color: #c8c8c8;
+  margin-bottom: 6px;
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 10px 16px;
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+}
+
+.main-panel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 22px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 212, 255, 0.04);
+}
+
+.settings-panel {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.settings-card {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.settings-form {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.settings-form label {
+  color: #cfd8dc;
+  font-weight: 600;
+}
+
+.settings-form input,
+.settings-form select {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  color: #e0e0e0;
+}
+
+.save-btn {
+  margin-top: 8px;
+  background: linear-gradient(45deg, #4ecdc4, #00d4ff);
+  color: #001;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media (max-width: 880px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Home buttons spacing */
+.home-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 20px;
+}
+.home-buttons a button {
+  min-width: 120px;
+}
+
+/* Header for top-right buttons */
+.header {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 1rem;
+  z-index: 10;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.profile,
+.settings {
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.8);
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.profile:hover,
+.settings:hover {
+  background: rgb(255, 255, 255);
+}
+
+/* Dashboard layout */
+.dashboard {
+  display: flex;
+  min-height: 70vh;
+  background: #f4f4f4;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 300px;
+  background: white;
+  padding: 2rem;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-card {
+  text-align: center;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  object-fit: cover;
+}
+
+.name {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.email,
+.address {
+  margin-bottom: 0.5rem;
+  color: #666;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: #667eea;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+.btn:hover {
+  background: #5a67d8;
+}
+
+/* Main panel */
+.main-panel {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card h2 {
+  margin-bottom: 1rem;
+  color: #667eea;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dashboard {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    padding: 1rem;
+  }
+  .main-panel {
+    padding: 1rem;
+  }
+}
