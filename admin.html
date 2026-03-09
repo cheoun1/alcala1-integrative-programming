@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Dashboard - Git Gud IT Services</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="dashboard-header">
+      <nav class="nav">
+        <a class="nav-brand" href="index.html">Git Gud</a>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="profile.html">Profile</a>
+          <a href="manage-users.html">Manage Users</a>
+          <a href="login.html" class="logout">Logout</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="dashboard">
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <h2 class="name">Admin</h2>
+          <p class="email">admin@gmail.com</p>
+        </div>
+      </aside>
+
+      <section class="main-panel">
+        <div class="card">
+          <div class="card admin-hero">
+            <div class="admin-hero-inner">
+              <div>
+                <h1>Admin Dashboard</h1>
+                <p class="muted">Welcome back, Administrator.</p>
+              </div>
+              <div class="admin-actions">
+                <a href="manage-users.html" class="btn">Manage Users</a>
+                <a href="settings.html" class="btn">Settings</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-stats">
+            <div class="stat-card">
+              <h3 id="stat-total-users">4</h3>
+              <p>Total Users</p>
+            </div>
+            <div class="stat-card">
+              <h3>1</h3>
+              <p>Admins</p>
+            </div>
+            <div class="stat-card">
+              <h3>0</h3>
+              <p>Active Sessions</p>
+            </div>
+            <div class="stat-card">
+              <h3>0</h3>
+              <p>Pending Requests</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>About the Admin</h2>
+            <p>
+              Administrator account responsible for managing users and system
+              settings. This is a demo dashboard with sample data and controls.
+            </p>
+          </div>
+
+          <div class="card">
+            <h2>Account Details</h2>
+            <p><strong>Full name:</strong> Administrator</p>
+            <p><strong>Email:</strong> admin@example.com</p>
+            <p><strong>Address:</strong> N/A</p>
+          </div>
+
+          <div class="card">
+            <h2>User Bio</h2>
+            <p>
+              Admin user for managing the site. Use the Manage Users page to
+              add, remove, or view users.
+            </p>
+          </div>
+        </div>
+        <!-- Quick Manage Users intentionally removed from admin dashboard.
+             Use the dedicated Manage Users page (manage-users.html) to view and edit users. -->
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>&copy; Git Gud IT Services | Created by John Niño Alcala</p>
+    </footer>
+    <script src="script.js"></script>
+  </body>
+</html>

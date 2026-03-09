@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Manage Users - Admin</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="dashboard-header">
+      <nav class="nav">
+        <a class="nav-brand" href="index.html">Git Gud</a>
+        <div class="nav-links">
+          <a href="admin.html">Dashboard</a>
+          <a href="manage-users.html">Manage Users</a>
+          <a href="login.html" class="logout">Logout</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="dashboard">
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <h2 class="name">Admin</h2>
+          <p class="email">admin@gmail.com</p>
+        </div>
+      </aside>
+
+      <section class="main-panel">
+        <div class="card">
+          <h2>Manage Users</h2>
+          <table id="users-table" class="admin-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td class="u-name">kuapal</td>
+                <td class="u-email">kupal@gmail.com</td>
+                <td class="u-role">user</td>
+                <td><button class="delete-user">Delete</button></td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td class="u-name">kolerapal</td>
+                <td class="u-email">nigro@gmail.com</td>
+                <td class="u-role">user</td>
+                <td><button class="delete-user">Delete</button></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Add User</h3>
+          <form id="add-user-form" class="admin-form">
+            <label for="add-name">Name</label>
+            <input id="add-name" type="text" required />
+            <label for="add-email">Email</label>
+            <input id="add-email" type="email" required />
+            <label for="add-role">Role</label>
+            <select id="add-role">
+              <option value="user">user</option>
+              <option value="admin">admin</option>
+            </select>
+            <button type="submit">Add User</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>&copy; Git Gud IT Services | Created by John Niño Alcala</p>
+    </footer>
+    <script src="script.js"></script>
+  </body>
+</html>

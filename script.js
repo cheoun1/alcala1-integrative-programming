@@ -75,7 +75,28 @@ document.addEventListener("DOMContentLoaded", () => {
           );
         }
 
-        if (!ok) e.preventDefault();
+        if (!ok) {
+          e.preventDefault();
+        } else {
+          e.preventDefault();
+          const emailVal =
+            email && email.value ? email.value.trim().toLowerCase() : "";
+          let userRole = "user";
+          if (emailVal === "admin@example.com" || emailVal.includes("admin")) {
+            userRole = "admin";
+          }
+          try {
+            sessionStorage.setItem("userRole", userRole);
+          } catch (err) {
+            console.warn("Could not access sessionStorage", err);
+          }
+
+          if (userRole === "admin") {
+            window.location.href = "admin.html";
+          } else {
+            window.location.href = "profile.html";
+          }
+        }
       }
     });
   }
@@ -121,5 +142,129 @@ document.addEventListener("DOMContentLoaded", () => {
 
         alert("Settings validated and saved (demo).");
       });
+  }
+
+  // ----- User count sync utilities -----
+  const parseNumber = (text) => {
+    if (!text && text !== 0) return 0;
+    try {
+      return parseInt(String(text).replace(/[,\s]/g, ""), 10) || 0;
+    } catch (e) {
+      return 0;
+    }
+  };
+
+  const getStoredCount = () => {
+    try {
+      const v = localStorage.getItem("totalUsers");
+      return v == null ? null : parseNumber(v);
+    } catch (e) {
+      return null;
+    }
+  };
+
+  const setStoredCount = (n) => {
+    try {
+      localStorage.setItem("totalUsers", String(n));
+    } catch (e) {
+      /* ignore */
+    }
+  };
+
+  const updateStatDisplays = (n) => {
+    const el = document.getElementById("stat-total-users");
+    if (el) el.innerText = Number(n).toLocaleString();
+  };
+
+  const computeInitialCount = () => {
+    const table = document.querySelector("#users-table");
+    if (table) {
+      const rows = table.querySelectorAll("tbody tr");
+      return rows.length;
+    }
+    const statEl = document.getElementById("stat-total-users");
+    if (statEl) return parseNumber(statEl.innerText);
+    return 0;
+  };
+
+  // ensure localStorage has a baseline value and update any visible stat
+  (function initUserCount() {
+    let stored = getStoredCount();
+    if (stored === null) {
+      stored = computeInitialCount();
+      setStoredCount(stored);
+    }
+    updateStatDisplays(stored);
+  })();
+
+  // Protect admin pages and wire simple admin CRUD on manage-users
+  const enforceAdminAccess = () => {
+    const path = window.location.pathname.split("/").pop();
+    const adminPages = ["admin.html", "manage-users.html", "manage-data.html"];
+    if (adminPages.includes(path)) {
+      const role = (sessionStorage.getItem("userRole") || "").toLowerCase();
+      if (role !== "admin") {
+        window.location.href = "login.html";
+      }
+    }
+  };
+
+  enforceAdminAccess();
+
+  // Simple manage-users behavior: add/delete rows from a static table
+  const usersTable = document.querySelector("#users-table");
+  const addUserForm = document.querySelector("#add-user-form");
+  if (usersTable && addUserForm) {
+    const tbody = usersTable.querySelector("tbody");
+
+    addUserForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = addUserForm.querySelector("#add-name").value.trim();
+      const email = addUserForm.querySelector("#add-email").value.trim();
+      const role = addUserForm.querySelector("#add-role").value;
+
+      if (!name || !email) {
+        alert("Name and email are required.");
+        return;
+      }
+
+      const nextId = tbody.querySelectorAll("tr").length + 1;
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${nextId}</td>
+        <td class="u-name">${name}</td>
+        <td class="u-email">${email}</td>
+        <td class="u-role">${role}</td>
+        <td><button class="delete-user">Delete</button></td>
+      `;
+      tbody.appendChild(tr);
+      addUserForm.reset();
+      // increment stored total users and update stat displays
+      try {
+        const cur = getStoredCount() || 0;
+        const next = cur + 1;
+        setStoredCount(next);
+        updateStatDisplays(next);
+      } catch (err) {
+        console.warn("Could not update stored user count", err);
+      }
+    });
+
+    usersTable.addEventListener("click", (e) => {
+      if (e.target && e.target.classList.contains("delete-user")) {
+        const tr = e.target.closest("tr");
+        if (tr) {
+          tr.remove();
+          try {
+            const cur = getStoredCount() || 0;
+            const next = Math.max(0, cur - 1);
+            setStoredCount(next);
+            updateStatDisplays(next);
+          } catch (err) {
+            console.warn("Could not update stored user count", err);
+          }
+        }
+      }
+    });
   }
 });
