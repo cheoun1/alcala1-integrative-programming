@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>HR & Payroll API</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 500px;
+        margin: 40px auto;
+        background: #fff;
+        padding: 24px 32px 32px 32px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      }
+      h1 {
+        text-align: center;
+        color: #2c3e50;
+      }
+      label {
+        display: block;
+        margin-top: 18px;
+        font-weight: bold;
+      }
+      input,
+      select,
+      button {
+        width: 100%;
+        padding: 8px;
+        margin-top: 6px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+      }
+      button {
+        background: #3498db;
+        color: #fff;
+        border: none;
+        font-size: 1rem;
+        margin-top: 18px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #217dbb;
+      }
+      .result,
+      .error {
+        margin-top: 24px;
+        padding: 16px;
+        border-radius: 6px;
+      }
+      .result {
+        background: #eafaf1;
+        color: #14532d;
+      }
+      .error {
+        background: #fdecea;
+        color: #b91c1c;
+      }
+      .employee-card {
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+        padding: 12px;
+        margin-bottom: 12px;
+      }
+      .employee-card strong {
+        color: #374151;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>HR & Payroll</h1>
+      <label for="action">Choose Action:</label>
+      <select id="action">
+        <option value="list">List Employees</option>
+        <option value="salary">Get Employee Salary</option>
+      </select>
+
+      <div id="employeeIdInput" style="display: none">
+        <label for="employeeId">Enter Employee ID:</label>
+        <input type="number" id="employeeId" min="1" placeholder="e.g. 1" />
+      </div>
+
+      <button id="submitBtn">Submit</button>
+
+      <div id="output"></div>
+    </div>
+
+    <script>
+      const employees = [
+        { id: 1, name: "steven saluba", position: "HR Manager", salary: 52000 },
+        {
+          id: 2,
+          name: "Krister Regis",
+          position: "Payroll Specialist",
+          salary: 42000,
+        },
+        { id: 3, name: "Carl padillo", position: "Recruiter", salary: 39000 },
+        {
+          id: 4,
+          name: "jay caputol",
+          position: "Compensation Analyst",
+          salary: 47000,
+        },
+      ];
+
+      function apiListEmployees() {
+        return new Promise((resolve) => {
+          setTimeout(() => resolve({ status: 200, data: employees }), 500);
+        });
+      }
+
+      function apiGetEmployeeSalary(id) {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            const emp = employees.find((e) => e.id === id);
+            if (emp) {
+              resolve({
+                status: 200,
+                data: { name: emp.name, salary: emp.salary },
+              });
+            } else {
+              reject({ status: 404, message: "Employee not found." });
+            }
+          }, 500);
+        });
+      }
+
+      const actionSelect = document.getElementById("action");
+      const employeeIdInput = document.getElementById("employeeIdInput");
+      const employeeIdField = document.getElementById("employeeId");
+      const submitBtn = document.getElementById("submitBtn");
+      const outputDiv = document.getElementById("output");
+
+      actionSelect.addEventListener("change", () => {
+        outputDiv.innerHTML = "";
+        if (actionSelect.value === "salary") {
+          employeeIdInput.style.display = "block";
+        } else {
+          employeeIdInput.style.display = "none";
+        }
+      });
+
+      submitBtn.addEventListener("click", async () => {
+        outputDiv.innerHTML = "";
+        if (actionSelect.value === "list") {
+          outputDiv.innerHTML = "<div>Loading...</div>";
+          try {
+            const response = await apiListEmployees();
+            if (response.status === 200) {
+              if (response.data.length === 0) {
+                outputDiv.innerHTML =
+                  '<div class="error">No employees found.</div>';
+              } else {
+                outputDiv.innerHTML =
+                  '<div class="result">' +
+                  response.data
+                    .map(
+                      (emp) => `
+                                    <div class="employee-card">
+                                        <strong>${emp.name}</strong><br>
+                                        Position: ${emp.position}<br>
+                                        Employee ID: ${emp.id}
+                                    </div>
+                                `,
+                    )
+                    .join("") +
+                  "</div>";
+              }
+            }
+          } catch (err) {
+            outputDiv.innerHTML =
+              '<div class="error">Failed to fetch employees.</div>';
+          }
+        } else if (actionSelect.value === "salary") {
+          const id = parseInt(employeeIdField.value, 10);
+          if (isNaN(id) || id < 1) {
+            outputDiv.innerHTML =
+              '<div class="error">Please enter a valid Employee ID.</div>';
+            return;
+          }
+          outputDiv.innerHTML = "<div>Loading...</div>";
+          try {
+            const response = await apiGetEmployeeSalary(id);
+            if (response.status === 200) {
+              outputDiv.innerHTML = `<div class="result">
+                            <strong>${response.data.name}</strong><br>
+                            Salary: ₱${response.data.salary.toLocaleString()}
+                        </div>`;
+            }
+          } catch (err) {
+            outputDiv.innerHTML = `<div class="error">${err.message || "Error retrieving salary."}</div>`;
+          }
+        }
+      });
+    </script>
+  </body>
+<!-- Add a link to admin.html and a bit more color to the design -->
+<style>
+    .admin-link {
+        display: block;
+        text-align: center;
+        margin-top: 18px;
+        text-decoration: none;
+        color: #fff;
+        background: #16a34a;
+        padding: 10px 0;
+        border-radius: 4px;
+        font-weight: bold;
+        transition: background 0.2s;
+    }
+    .admin-link:hover {
+        background: #166534;
+    }
+    /* Add a subtle gradient to the container background */
+    .container {
+        background: linear-gradient(135deg, #fff 80%, #e0f2fe 100%);
+    }
+    /* Add a colored border to the container */
+    .container {
+        border: 2px solid #3498db;
+    }
+</style>
+<a href="admin.html" class="admin-link">Go to Admin Panel</a>
