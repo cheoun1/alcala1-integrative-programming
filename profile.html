@@ -5,6 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profile - Git Gud IT Services</title>
     <link rel="stylesheet" href="style.css" />
+    <style>
+      /* Profile page theme override */
+      .dashboard-header { background: linear-gradient(120deg, #0b2f4f, #113f68); border-bottom: 1px solid #1f6a96; }
+      .nav, .nav-links a { color: #e4f2ff; }
+      .nav-links a:hover, .back-home:hover, .profile-btn:hover, .settings-btn:hover { color: #a8d8ff; }
+      .sidebar-card { background: rgba(15, 41, 68, 0.94); border: 1px solid #4688b7; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); }
+      .card { background: rgba(10, 30, 59, 0.85); border: 1px solid #346b97; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.32); border-radius: 16px; }
+      .card h2 { color: #e7f7ff; }
+      .card p, .card strong { color: #d6e9ff; }
+      .btn, .settings-btn, .logout { background: #1c75a8; color: #fff; border: 1px solid #6ec1ff; }
+      .btn:hover, .settings-btn:hover, .logout:hover { background: #389cd4; }
+      .muted { color: #afd6ef; }
+      .back-home { color: #a8d8ff; margin-right: 10px; }
+      .avatar { border: 3px solid #67afe3; box-shadow: 0 0 18px rgba(103, 175, 227, 0.55); }
+      iframe { border: 2px solid #4da0cf; border-radius: 12px; background: #0e2d51; }
+    </style>
   </head>
   <body>
     <header class="dashboard-header">
@@ -53,8 +69,9 @@
         </div>
 
         <div class="card">
-          <h2>User Bio</h2>
-          <p>GIT GUD at IT – always learning and improving!</p>
+          <h2>Book IT Services</h2>
+          <p class="muted">Request service after login. Your bookings appear in admin dashboard.</p>
+          <iframe src="API.html" title="Book IT Service" width="100%" height="760" style="border:1px solid #e2e8f0;border-radius:8px;"></iframe>
         </div>
       </section>
     </main>

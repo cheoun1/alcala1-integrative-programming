@@ -1,10 +1,31 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Admin Dashboard - Git Gud IT Services</title>
     <link rel="stylesheet" href="style.css" />
+    <style>
+      /* Admin page theme override */
+      .dashboard-header { background: linear-gradient(120deg, #0b2f4f, #113f68); border-bottom: 1px solid #1f6a96; }
+      .nav-links a, .nav-brand { color: #e4f2ff; }
+      .nav-links a:hover { color: #a8d8ff; }
+      .sidebar-card { background: rgba(15, 41, 68, 0.94); border: 1px solid #4688b7; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); }
+      .card { background: rgba(10, 30, 59, 0.85); border: 1px solid #346b97; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.32); border-radius: 16px; }
+      .card h1, .card h2 { color: #e7f7ff; }
+      .card p, .card strong { color: #d6e9ff; }
+      #bookingsList { background: #0c324f; border: 1px solid #5a9ecf; padding: 12px; border-radius: 10px; color: #f8fcff; }
+      button.btn { background: #1c75a8; color: #fff; border: 1px solid #6ec1ff; }
+      button.btn:hover { background: #389cd4; }
+      .muted { color: #bfdcff; }
+      .footer { background: #071b30; color: #9ab8d8; border-top: 1px solid #236fa4; }
+      .bookings-fade { opacity: 0; transform: translateY(6px); transition: opacity .35s ease, transform .35s ease; }
+      .bookings-fade.visible { opacity: 1; transform: translateY(0); }
+      .admin-loading { position: fixed; inset:0; display:flex; justify-content:center; align-items:center; background:rgba(5,18,34,.35); visibility:hidden; opacity:0; transition:opacity .3s ease, visibility .3s ease; z-index:100; }
+      .admin-loading.active { visibility:visible; opacity:1; }
+      .admin-loading .spinner { width:30px; height:30px; border:4px solid rgba(255,255,255,.25); border-top-color:#0ea5e9; border-radius:50%; animation:spin .7s linear infinite; }
+      @keyframes spin{to{transform:rotate(360deg)}}
+    </style>
   </head>
   <body>
     <header class="dashboard-header">
@@ -84,20 +105,85 @@
             </p>
           </div>
         </div>
-        <!-- Quick Manage Users intentionally removed from admin dashboard.
-             Use the dedicated Manage Users page (manage-users.html) to view and edit users. -->
       </section>
     </main>
 
-    <!-- HR & Payroll Section -->
-    <div class="card" style="max-width: 900px; margin: 2rem auto">
-      <h2>HR & Payroll</h2>
-      <iframe src="API.html" width="100%" height="600" frameborder="0"></iframe>
-    </div>
+      <div class="card" style="max-width:900px;margin:1.5rem auto;padding:14px">
+        <h2>Bookings</h2>
+        <p class="muted">View and export bookings submitted by users.</p>
+        <div id="bookingsAdmin" class="bookings-fade" style="margin-top:10px">
+          <div id="bookingsList">Loading bookings...</div>
+          <div style="margin-top:8px">
+            <button id="exportAll" class="btn">Export All Bookings (JSON)</button>
+            <button id="clearAll" class="btn" style="background:#ef4444;color:#fff;margin-left:8px">Clear All Bookings</button>
+            <button id="refreshBookings" class="btn" style="margin-left:8px">Refresh</button>
+          </div>
+        </div>
+      </div>
+      <div id="adminLoading" class="admin-loading"><div class="spinner"></div></div>
 
     <footer class="footer">
       <p>&copy; Git Gud IT Services | Created by John Niño Alcala</p>
     </footer>
     <script src="script.js"></script>
+    <script>
+      // Admin bookings panel: read from same localStorage key used by booking form
+      const STORAGE_KEY = 'gitgud_bookings_v1';
+      const bookingsAdmin = document.getElementById('bookingsAdmin');
+      const bookingsList = document.getElementById('bookingsList');
+      const exportAll = document.getElementById('exportAll');
+      const clearAll = document.getElementById('clearAll');
+      const refreshBtn = document.getElementById('refreshBookings');
+      const adminLoading = document.getElementById('adminLoading');
+
+      function setAdminLoading(on){
+        if(on){ adminLoading.classList.add('active'); }
+        else{ adminLoading.classList.remove('active'); }
+      }
+
+      function loadBookings(){ try{ const raw = localStorage.getItem(STORAGE_KEY); return raw?JSON.parse(raw):[] }catch(e){return[]} }
+      function renderAdmin(){
+        setAdminLoading(true);
+        const all = loadBookings();
+        bookingsList.innerHTML = '';
+        if(all.length === 0){
+          bookingsList.innerHTML = '<div class="muted">No bookings available.</div>';
+        } else {
+          all.slice().reverse().forEach(b=>{
+            const d = document.createElement('div');
+            d.style.border='1px solid #e6eef6';
+            d.style.padding='10px';
+            d.style.marginBottom='8px';
+            d.style.borderRadius='6px';
+            d.innerHTML = `<strong>${b.name}</strong> <span class="muted">(${b.email})</span><div class="muted" style="margin-top:6px">${b.service} • ${b.datetime||'No date specified'}</div><div style="margin-top:6px">${b.details||''}</div><div class="muted" style="margin-top:6px">Booked: ${new Date(b.created).toLocaleString()}</div>`;
+            bookingsList.appendChild(d);
+          })
+        }
+        setTimeout(()=>{
+          bookingsAdmin.classList.add('visible');
+          setAdminLoading(false);
+        }, 80);
+      }
+
+      exportAll.addEventListener('click', ()=>{
+        const all = loadBookings(); const blob = new Blob([JSON.stringify(all, null, 2)], {type:'application/json'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'all_bookings.json'; a.click(); URL.revokeObjectURL(url);
+      })
+
+      clearAll.addEventListener('click', ()=>{
+        if(!confirm('Clear ALL bookings permanently?')) return;
+        localStorage.removeItem(STORAGE_KEY);
+        renderAdmin();
+      })
+
+      refreshBtn.addEventListener('click', ()=>{ bookingsAdmin.classList.remove('visible'); renderAdmin(); });
+
+      // Listen for bookings created elsewhere (Profile iframe) and refresh list
+      window.addEventListener('message', e=>{
+        try{ if(e.data && e.data.type==='bookingCreated') renderAdmin(); }catch(_){ }
+      });
+
+      // initial render
+      renderAdmin();
+    </script>
   </body>
 </html>
